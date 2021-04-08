@@ -6,14 +6,18 @@ import { COLORS } from "../../constants";
 import VisuallyHidden from "../VisuallyHidden";
 
 const ProgressBar = ({ value, size }) => {
-  const Component =
-    size === "large"
-      ? LargeWrapper
-      : size === "medium"
-      ? MediumWrapper
-      : SmallWrapper;
+  const Wrapper = {
+    large: LargeWrapper,
+    medium: MediumWrapper,
+    small: SmallWrapper,
+  }[size];
+
+  if (!Wrapper) {
+    throw new Error(`Unknown size passed to ProgressBar: ${size}`);
+  }
+
   return (
-    <Component
+    <Wrapper
       role="progressbar"
       aria-valuenow={value}
       aria-valuemin={0}
@@ -23,7 +27,7 @@ const ProgressBar = ({ value, size }) => {
         <Bar value={value} />
         <VisuallyHidden>{value}%</VisuallyHidden>
       </BarWrapper>
-    </Component>
+    </Wrapper>
   );
 };
 
