@@ -26,34 +26,29 @@ const styles = {
 const IconInput = ({ label, icon, width = 250, size, placeholder }) => {
   const style = styles[size];
 
-  const [focused, setFocused] = React.useState(false);
-
   if (!style) {
     throw new Error(`Unknown size passed to IconInput: ${size}`);
   }
 
   return (
-    <Outline focused={focused}>
-      <Wrapper
-        style={{
-          "--width": width + "px",
-          "--border-width": style.borderWidth + "px",
-          "--padding": style.padding + "px",
-          "--padding-left": style.paddingLeft + "px",
-        }}
-      >
-        <VisuallyHidden>{label}</VisuallyHidden>
-        <IconWrapper>
-          <Icon id={icon} strokeWidth={2} size={style.iconSize} />
-        </IconWrapper>
-        <Input
-          placeholder={placeholder}
-          style={{ "--font-size": style.fontSize + "px" }}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-        />
-      </Wrapper>
-    </Outline>
+    <Wrapper
+      style={{
+        "--width": width + "px",
+        "--border-width": style.borderWidth + "px",
+        "--padding": style.padding + "px",
+        "--padding-left": style.paddingLeft + "px",
+      }}
+    >
+      <VisuallyHidden>{label}</VisuallyHidden>
+      <IconWrapper>
+        <Icon id={icon} strokeWidth={2} size={style.iconSize} />
+      </IconWrapper>
+      <Input
+        placeholder={placeholder}
+        style={{ "--font-size": style.fontSize + "px" }}
+      />
+      <Outline />
+    </Wrapper>
   );
 };
 
@@ -83,10 +78,18 @@ const Input = styled.input`
 `;
 
 const Outline = styled.div`
-  width: max-content;
-  outline: ${({ focused }) => (focused ? "2px solid #4377cb" : "none")};
-  outline-offset: 2px;
-  border-radius: 2px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+
+  ${Input}:focus + & {
+    outline: 2px solid #4377cb;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
 `;
 
 const Wrapper = styled.div`
