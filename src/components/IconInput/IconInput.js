@@ -92,7 +92,8 @@ const Outline = styled.div`
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled.label`
+  display: block;
   position: relative;
   border-bottom: var(--border-width) solid black;
   padding: var(--padding);
